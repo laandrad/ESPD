@@ -33,3 +33,11 @@ class SampleListener(Leap.Listener):
             left_hand_position = 0
 
         return frame.id, right_hand_position, left_hand_position
+
+
+class GameEnvironment:
+
+    def __init__(self, left_hand, right_hand):
+        self.left_hand = left_hand
+        self.righ_hand = right_hand
+

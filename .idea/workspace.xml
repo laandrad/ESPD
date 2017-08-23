@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15ca8f2f-a509-4d97-a77a-71eb94ceb327" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Leap.dll" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Leap.lib" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LeapCSharp.dll" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LeapJava.dll" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/LeapPython.pyd" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/msvcp120.dll" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/msvcr120.dll" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapCSharp.NET3.5.dll" afterPath="$PROJECT_DIR$/LeapCSharp.NET3.5.dll" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LeapCSharp.NET4.0.dll" afterPath="$PROJECT_DIR$/LeapCSharp.NET4.0.dll" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/Python Files.iml" afterPath="$PROJECT_DIR$/.idea/Python Files.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gametools.py" afterPath="$PROJECT_DIR$/gametools.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/sample.py" afterPath="$PROJECT_DIR$/sample.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,7 +14,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="sample.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="sample.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sample.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-547">
@@ -38,11 +26,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gametools.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="gametools.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gametools.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="148">
-              <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state relative-caret-position="286">
+              <caret line="37" column="6" lean-forward="false" selection-start-line="37" selection-start-column="6" selection-end-line="37" selection-end-column="6" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -53,8 +41,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" column="27" lean-forward="false" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+            <state relative-caret-position="-9">
+              <caret line="39" column="26" lean-forward="true" selection-start-line="39" selection-start-column="26" selection-end-line="39" selection-end-column="26" />
               <folding>
                 <element signature="e#0#13#0" expanded="true" />
               </folding>
@@ -88,15 +76,15 @@
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/gametools.py" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/main.py" />
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/sample.py" />
+        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/gametools.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="96" />
-    <option name="y" value="117" />
+    <option name="x" value="257" />
+    <option name="y" value="192" />
     <option name="width" value="1382" />
     <option name="height" value="744" />
   </component>
@@ -288,7 +276,8 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="96" y="117" width="1382" height="744" extended-state="0" />
+    <frame x="257" y="192" width="1382" height="744" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12462687" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3296433" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -297,7 +286,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32841328" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32819724" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34822804" sideWeight="0.4969743" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34822804" sideWeight="0.4969743" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -485,10 +474,10 @@
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/gametools.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/main.py" />
     <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
-    <entry file="file://$PROJECT_DIR$/gametools.py">
+    <entry file="file://$PROJECT_DIR$/sample.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="148">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        <state relative-caret-position="-547">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="17" selection-end-column="11" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
@@ -497,18 +486,18 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" column="27" lean-forward="false" selection-start-line="23" selection-start-column="27" selection-end-line="23" selection-end-column="27" />
+        <state relative-caret-position="-9">
+          <caret line="39" column="26" lean-forward="true" selection-start-line="39" selection-start-column="26" selection-end-line="39" selection-end-column="26" />
           <folding>
             <element signature="e#0#13#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sample.py">
+    <entry file="file://$PROJECT_DIR$/gametools.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-547">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="17" selection-end-column="11" />
+        <state relative-caret-position="286">
+          <caret line="37" column="6" lean-forward="false" selection-start-line="37" selection-start-column="6" selection-end-line="37" selection-end-column="6" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
