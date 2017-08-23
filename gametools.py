@@ -4,9 +4,9 @@ import sys
 
 src_dir = os.path.dirname(inspect.getfile(inspect.currentframe()))
 # Windows and Linux
-arch_dir = '../lib/x64' if sys.maxsize > 2**32 else '../lib/x86'
+# arch_dir = '../lib/x64' if sys.maxsize > 2**32 else '../lib/x86'
 # Mac
-# arch_dir = os.path.abspath(os.path.join(src_dir, '../lib'))
+arch_dir = os.path.abspath(os.path.join(src_dir, '../ESPD'))
 sys.path.insert(0, os.path.abspath(os.path.join(src_dir, arch_dir)))
 
 import Leap
@@ -33,3 +33,11 @@ class SampleListener(Leap.Listener):
             left_hand_position = 0
 
         return frame.id, right_hand_position, left_hand_position
+
+
+class GameEnvironment:
+
+    def __init__(self, left_hand, right_hand):
+        self.left_hand = left_hand
+        self.righ_hand = right_hand
+

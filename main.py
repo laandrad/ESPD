@@ -5,14 +5,14 @@ from gametools import *
 
 def main():
     # set constants
-    images_path = "C:/Users/Alejandro/Dropbox/Dissertation/Python Files/images/"
+    images_path = "/Users/alejandro/Dropbox (Personal)/Dissertation/Python Files/ESPD/images/"
     window_width = 1366
     window_height = 600
     limit_up = 150
     limit_down = window_height - 100
     color_blue = (0, 0, 255)
     color_red = (255, 0, 0)
-    done = False
+    running = True
 
     # initialize pygame setup
     pygame.init()
@@ -30,10 +30,15 @@ def main():
     listener = SampleListener()
     controller = Leap.Controller()
 
-    while not done:
+    while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                done = True
+                return
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    return
+                # running = False
 
         # get hands positions
         frame, right_hand, left_hand = listener.on_frame(controller)
