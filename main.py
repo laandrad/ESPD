@@ -11,18 +11,14 @@ color_red = (255, 0, 0)
 running = True
 
 
-
-
 def main():
         env1 = GameEnvironment(window_width, window_height, limit_up, limit_down,
                                color_red, color_blue, images_path)
+        env1.task_1()
 
-        # if i >= 6:
-        #     break
-        env1.task_2()
-        # for i in xrange(mark1_t2):
-        #     env1.task_2(mark1_t2[i], mark2_t2[i])
-        # i += 1
+        env2 = GameEnvironment(window_width, window_height, limit_up, limit_down,
+                               color_red, color_blue, images_path)
+        env2.task_2()
 
 
 if __name__ == "__main__":
