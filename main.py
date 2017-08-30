@@ -13,11 +13,11 @@ running = True
 
 def main():
         env1 = GameEnvironment(window_width, window_height, limit_up, limit_down,
-                               color_red, color_blue, images_path)
+                               color_red, color_blue, images_path, 1)
         env1.task_1()
 
         env2 = GameEnvironment(window_width, window_height, limit_up, limit_down,
-                               color_red, color_blue, images_path)
+                               color_red, color_blue, images_path, 2)
         env2.task_2()
 
 
