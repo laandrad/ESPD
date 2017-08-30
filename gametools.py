@@ -21,25 +21,14 @@ class GameEnvironment:
         global clock
         global listener
         global controller
-        global text1
-        global text2
-        global text3
 
         # initialize pygame setup
         pygame.init()
-        # screen = pygame.display.set_mode((window_width, window_height))
         clock = pygame.time.Clock()
 
         # Create a sample listener and controller for the LeapMotion sensor
         listener = SampleListener()
         controller = Leap.Controller()
-
-        # Create end of task window
-        pygame.font.init()
-        font = pygame.font.SysFont("comicsansms", 40)
-        text1 = font.render("Good Job!", 4, (0, 0, 0))
-        text2 = font.render("End of Task: " + str(task_number) + " of 9", 4, (0, 0, 0))
-        text3 = font.render("Press Space to Continue", 4, (0, 0, 0))
 
     def task_1(self):
         screen = pygame.display.set_mode((self.window_width, self.window_height))
@@ -92,36 +81,21 @@ class GameEnvironment:
             pygame.display.flip()
             clock.tick(60)
 
-        # when task ends, print end of task screen
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    pygame.quit()
-                    return
-
-            screen.fill((255, 255, 255))
-            screen.blit(text1, (self.window_width / 2 - text1.get_width() / 2, self.window_height * 1 / 6))
-            screen.blit(text2, (self.window_width / 2 - text2.get_width() / 2, self.window_height * 2 / 6))
-            screen.blit(text3, (self.window_width / 2 - text3.get_width() / 2, self.window_height * 4 / 6))
-
-            # display and wait for tick
-            pygame.display.flip()
-
-    def task_2(self):
+    def task_2(self, time, fox_size, rabbit_size):
         screen = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption('ESPD - Task 2')
-        running = True
 
         # Load images as sprites
         fox = Fox(self.limit_down)
         rabbit = Rabbit(self.limit_down)
 
-        # create two vectors
-        mark1 = range(100, 500)
-        mark2 = [500 - x for x in range(100, 500)]
+        # load two vectors
+        mark1 = rabbit_size
+        mark2 = fox_size
+        n_iter = len(time)
         i = 0
 
-        while running:
+        while i <= n_iter:
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     pygame.quit()
@@ -151,20 +125,6 @@ class GameEnvironment:
             # display and wait for tick
             pygame.display.flip()
             clock.tick(60)
-            i += 1
+            i += 2
 
-        # when task ends, print end of task screen
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    pygame.quit()
-                    return
-
-            screen.fill((255, 255, 255))
-            screen.blit(text1, (self.window_width / 2 - text1.get_width() / 2, self.window_height * 1 / 6))
-            screen.blit(text2, (self.window_width / 2 - text2.get_width() / 2, self.window_height * 2 / 6))
-            screen.blit(text3, (self.window_width / 2 - text3.get_width() / 2, self.window_height * 4 / 6))
-
-            # display and wait for tick
-            pygame.display.flip()
 
