@@ -1,5 +1,4 @@
 import plotly
-import math
 from plotly.graph_objs import Scatter, Layout
 
 
@@ -20,18 +19,15 @@ class LVSystem:
         pred = [y]
 
         for i in xrange(n_iter):
+            # print "Cambio x: " + str(self.a * x) + " " + str(- self.b * x * y)
+            # print "Cambio y: " + str(-self.m * y) + " " + str(self.n * x * y)
             x += self.a * x - self.b * x * y
             y += -self.m * y + self.n * x * y
 
-            # x = "%.1f" % x
-            # y = "%.1f" % y
             if x < 0:
                 x = 0
             if y < 0:
                 y = 0
-
-            x = int(math.floor(x))
-            y = int(math.floor(y))
 
             prey.append(x)
             pred.append(y)
@@ -40,11 +36,15 @@ class LVSystem:
 
         return range(0, n_iter), prey, pred
 
-a = LVSystem(150, 5, 0.3, 0.02, 0.4, 0.004)
-time, prey, pred = a.simulate(50)
 
-plotly.offline.plot({
-    "data": [Scatter(x=time, y=prey, name="Prey", mode="lines"),
-             Scatter(x=time, y=pred, name="Predator", mode="lines")],
-    "layout": Layout(title="Predator-Prey Dynamic System")
-})
+# a = LVSystem(800, 5, 0.005, 0.000625, 0.2, 0.0003)
+# a = LVSystem(40, 20, 0.1, 0.003125, 0.02, 0.0025)
+# a = LVSystem(400, 100, 0.01, 2.5 / 40000, 0.01, 1.2 / 40000)
+# time, prey, pred = a.simulate(3000)
+#
+#
+# plotly.offline.plot({
+#     "data": [Scatter(x=time, y=prey, name="Prey", mode="lines"),
+#              Scatter(x=time, y=pred, name="Predator", mode="lines")],
+#     "layout": Layout(title="Predator-Prey Dynamic System")
+# })
