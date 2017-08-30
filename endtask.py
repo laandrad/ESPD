@@ -8,6 +8,8 @@ class EndTask:
 
     def end(self, task_number):
         screen = pygame.display.set_mode((self.window_width, self.window_height))
+        pygame.display.set_caption('ESPD - Task ' + str(task_number))
+
         # initialize pygame setup
         pygame.init()
 
