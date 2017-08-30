@@ -16,14 +16,15 @@ def main():
     # set student number
     student = sys.argv[1]
 
-    # # Task 1
-    # env = Task(window_width, window_height, limit_up, limit_down,
-    #            color_red, color_blue, images_path, 1)
-    # env.task_1(1)
+    # Task 1
+    env = Task(window_width, window_height, limit_up, limit_down,
+               color_red, color_blue, images_path, 1)
+    task_description = "Align population sizes to horizontal markers"
+    env.task_1(1, task_description)
 
     # Task 2
     a = LVSystem(400, 100, 0.01, 2.5 / 40000, 0.01, 1.2 / 40000)
-    time, fox_size, rabbit_size = a.simulate(int(window_width * 0.1))
+    time, fox_size, rabbit_size = a.simulate(int(window_width * 2))
     b0 = 30
     b1 = 0.8
     fox_size = [limit_down - m * b1 + b0 for m in fox_size]
@@ -31,7 +32,8 @@ def main():
 
     env = Task(window_width, window_height, limit_up, limit_down,
                color_red, color_blue, images_path, 1)
-    env.task_2(2, student, time, fox_size, rabbit_size)
+    task_description = "Use hands to follow the horizontal markers"
+    env.task_2(2, task_description, student, time, fox_size, rabbit_size)
 
 
 if __name__ == "__main__":

@@ -50,11 +50,11 @@ class SampleListener(Leap.Listener):
         #     frame.id, right_hand, left_hand)
 
         # select what top image to display
-        if left_hand > limit_down * 5 / 6:
+        if left_hand > limit_down * 7 / 8:
             foxes_size = 1
-        elif left_hand > limit_down * 4 / 6:
+        elif left_hand > limit_down * 6 / 8:
             foxes_size = 2
-        elif left_hand > limit_down * 3 / 6:
+        elif left_hand > limit_down * 5 / 8:
             foxes_size = 3
         else:
             foxes_size = 4

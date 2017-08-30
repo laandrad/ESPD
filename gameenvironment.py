@@ -27,14 +27,14 @@ class GameEnvironment:
         listener = SampleListener()
         controller = Leap.Controller()
 
-    def on_task(self, mark1, mark2, task_number):
+    def on_task(self, mark1, mark2, red_pointlist, blue_pointlist, task_number):
         screen = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption('ESPD - Task ' + str(task_number))
 
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 pygame.quit()
-                return
+                return None
 
         # get hands position
         frame, right_hand, left_hand, foxes_size, rabbits_size = listener.on_frame(controller,
@@ -59,6 +59,23 @@ class GameEnvironment:
                          pygame.Rect(270, right_hand, 50, self.limit_down - right_hand))
         pygame.draw.line(screen, (0, 0, 0), (85, mark1), (85 + 50, mark1), 5)
         pygame.draw.line(screen, (0, 0, 0), (270, mark2), (270 + 50, mark2), 5)
+
+        # draw plot canvas
+        pygame.draw.line(screen, (0, 0, 0), (600, self.limit_down),
+                         (self.window_width - 20, self.limit_down), 5)  # Time axis
+        pygame.draw.line(screen, (0, 0, 0), (600, self.limit_up - 50),
+                         (600, self.limit_down), 5)  # population size axis
+        pygame.font.init()
+        font = pygame.font.SysFont("comicsansms", 20)
+        x_lab = font.render("Time", 4, (0, 0, 0))
+        y_lab = font.render("Population Size", 4, (0, 0, 0))
+        y_lab = pygame.transform.rotate(y_lab, 90)
+        screen.blit(x_lab, (self.window_width * 2 / 3 - x_lab.get_width() / 2, self.limit_down + 10))
+        screen.blit(y_lab, (550, self.window_height / 2 - y_lab.get_height() / 2))
+
+        # draw line plot
+        pygame.draw.lines(screen, self.color_blue, False, blue_pointlist, 2)
+        pygame.draw.lines(screen, self.color_red, False, red_pointlist, 2)
 
         # display and wait for tick
         pygame.display.flip()
