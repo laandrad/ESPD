@@ -39,7 +39,7 @@ class Foxes(pygame.sprite.Sprite):
             self.image, self.rect = load_image("foxes3.png", (180, 80))
         else:
             self.image, self.rect = load_image("foxes4.png", (180, 80))
-        # self.image, self.rect = load_image("foxes1.png", (180, 80))
+
         self.rect.topleft = 25, limit_up - 100
 
 
@@ -55,5 +55,5 @@ class Rabbits(pygame.sprite.Sprite):
             self.image, self.rect = load_image("rabbits3.png", (180, 80))
         else:
             self.image, self.rect = load_image("rabbits4.png", (180, 80))
-        # self.image, self.rect = load_image("rabbits1.png", (180, 80))
+
         self.rect.topleft = 200, limit_up - 100
