@@ -46,8 +46,8 @@ class SampleListener(Leap.Listener):
         if left_hand > limit_down:
             left_hand = limit_down
 
-        print "Frame id: %d, right_hand_position: %d, left_hand_position: %d" % (
-            frame.id, right_hand, left_hand)
+        # print "Frame id: %d, right_hand_position: %d, left_hand_position: %d" % (
+        #     frame.id, right_hand, left_hand)
 
         # select what top image to display
         if left_hand > limit_down * 5 / 6:

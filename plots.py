@@ -1,81 +1,36 @@
-import math
-import plotly
-from plotly.graph_objs import Scatter, Layout
-
-
-# logistic map
-class LogisticMap:
-    def __init__(self, birth_death_rate, carrying_fraction):
-        self.R = birth_death_rate
-        self.x = carrying_fraction
-
-    def log_plot(self, n_iter):
-        x = self.x
-        vector = []
-
-        for i in xrange(n_iter):
-            y = self.R * x * (1 - x)
-            x = y
-            vector.append(y)
-
-        return vector
-
-
-a = LogisticMap(3.49, 0.2)
-a = a.log_plot(50)
-h = [h * 500 for h in a]
-p = [p * 500 for p in a]
-
-
-# plotly.offline.plot({
-#     "data": [Scatter(x=range(0, len(a)), y=a)],
-#     "layout": Layout(title="hello world")
-# })
+import numpy as np
 
 
 class LVSystem:
-    def __init__(self, num_pred, num_prey,
-                 birth_rate_prey, death_rate_pred,
-                 death_rate_preyOverPred, birth_rate_predOverprey):
-        self.P = num_pred
-        self.H = num_prey
-        self.a = birth_rate_prey
-        self.b = death_rate_preyOverPred
-        self.m = death_rate_pred
-        self.n = birth_rate_predOverprey
+    def __init__(self, height=600, width=800, offset=60, frequency=5):
+        self.height = height
+        self.width = width
+        self.offset = offset
+        self.frequency = frequency
 
-    def log_plot(self, n_iter):
-        y = self.P
-        x = self.H
+    def log_plot(self):
+        wave_height = self.height / 5
+        f = self.frequency
+        fs = self.width * 2  # sample rate
+        t = np.arange(fs)  # the points on the x axis for plotting
 
-        pred = [y]
-        prey = [x]
+        # compute wave length
+        fox_size = [int(wave_height * np.sin(2 * np.pi * f * (i + self.offset) / fs)) for i in t]  # Red line
+        fox_size = [a + wave_height * 1 + 125 for a in fox_size]
 
-        for i in xrange(n_iter):
-            y += -y * self.m + self.n * x * y
-            x += x * self.a - self.b * x * y
+        rabbit_size = [int(wave_height * np.sin(2 * np.pi * f * i / fs)) for i in t]  # Blue line
+        rabbit_size = [a + wave_height * 2 + 125 for a in rabbit_size]
 
-            if x <= 0:
-                x = 0
-            if y <= 0:
-                x = 0
+        return t, fox_size, rabbit_size
 
-            y = int(math.floor(y))
-            x = int(math.floor(x))
 
-            pred.append(y)
-            prey.append(x)
-
-        return pred, prey
-
-# a = LVSystem(5, 30, 0.5, 0.08, 0.03, 0.020)
-a = LVSystem(5, 30, 0.5, 0.08, 0.03, 0.02)
-p, h = a.log_plot(50)
-
-print a
-
-plotly.offline.plot({
-    "data": [Scatter(x=range(0, len(p)), y=p, name="Fox"),
-             Scatter(x=range(0, len(h)), y=h, name="Rabbit")],
-    "layout": Layout(title="Predator-Prey Dynamic System")
-})
+# import plotly
+# from plotly.graph_objs import Scatter, Layout
+# a = LVSystem()
+# time, fox_size, rabbit_size = a.log_plot()
+#
+# plotly.offline.plot({
+#     "data": [Scatter(x=time, y=fox_size, name="Fox"),
+#              Scatter(x=time, y=rabbit_size, name="Rabbit")],
+#     "layout": Layout(title="Predator-Prey Dynamic System")
+# })
