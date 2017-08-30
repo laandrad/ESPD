@@ -64,6 +64,6 @@ class GameEnvironment:
         pygame.display.flip()
         clock.tick(60)
 
-        return right_hand, left_hand
+        return frame, right_hand, left_hand
 
 
