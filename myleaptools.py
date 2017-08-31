@@ -17,7 +17,7 @@ class SampleListener(Leap.Listener):
     def on_connect(self, controller):
         print "Connected"
 
-    def on_frame(self, controller, limit_down, limit_up):
+    def on_frame(self, controller, limit_down, limit_up, track_right=True, track_left=True):
         frame = controller.frame()
         right_hand = frame.hands.rightmost
         left_hand = frame.hands.leftmost
@@ -50,21 +50,27 @@ class SampleListener(Leap.Listener):
         #     frame.id, right_hand, left_hand)
 
         # select what top image to display
-        if left_hand > limit_down * 7 / 8:
-            foxes_size = 1
-        elif left_hand > limit_down * 6 / 8:
-            foxes_size = 2
-        elif left_hand > limit_down * 5 / 8:
-            foxes_size = 3
+        if track_left:
+            if left_hand > limit_down * 7 / 8:
+                foxes_size = 1
+            elif left_hand > limit_down * 6 / 8:
+                foxes_size = 2
+            elif left_hand > limit_down * 5 / 8:
+                foxes_size = 3
+            else:
+                foxes_size = 4
         else:
             foxes_size = 4
 
-        if right_hand > limit_down * 5 / 6:
-            rabbits_size= 1
-        elif right_hand > limit_down * 4 / 6:
-            rabbits_size = 2
-        elif right_hand > limit_down * 3 / 6:
-            rabbits_size = 3
+        if track_right:
+            if right_hand > limit_down * 5 / 6:
+                rabbits_size= 1
+            elif right_hand > limit_down * 4 / 6:
+                rabbits_size = 2
+            elif right_hand > limit_down * 3 / 6:
+                rabbits_size = 3
+            else:
+                rabbits_size = 4
         else:
             rabbits_size = 4
 
