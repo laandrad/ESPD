@@ -6,7 +6,14 @@ class InitTask:
         self.window_width = window_width
         self.window_height = window_height
 
-    def start(self, task_number, task_description):
+        with open("taskdescription.txt", "r") as f:
+            task_description = file.readlines(f)
+
+        task_description = [w.strip("\n") for w in task_description]
+
+        global task_description
+
+    def start(self, task_number):
         screen = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption('ESPD - Task ' + str(task_number))
 
@@ -17,7 +24,7 @@ class InitTask:
         pygame.font.init()
         font1 = pygame.font.SysFont("comicsansms", 30)
         text1 = font1.render("Task: " + str(task_number) + " of 9", 4, (0, 0, 0))
-        text2 = font1.render(task_description, 4, (0, 0, 0))
+        text2 = font1.render(task_description[task_number], 4, (0, 0, 0))
         text3 = font1.render("Press Space to Start", 4, (0, 0, 0))
 
         while True:

@@ -1,0 +1,9 @@
+Task Description
+Align hands with horizontal markers
+Use hands to follow horizontal markers
+Use left hand to follow left marker and note how the plot changes
+Use right hand to follow right marker and note how the plot changes
+Use both hands to follow markers and note how the plot changes
+Use left hand to control the fox population according to how the rabbit changes
+Use right hand to control the rabbit population according to how the fox changes
+Use hands to control both populations according to how each population changes

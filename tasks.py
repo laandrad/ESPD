@@ -7,7 +7,7 @@ import pandas as pd
 
 class Task:
     def __init__(self, window_width, window_height, limit_up, limit_down,
-                 color_red, color_blue, images_path, task_number):
+                 color_red, color_blue, images_path):
         self.window_width = window_width
         self.window_height = window_height
         self.limit_up = limit_up
@@ -15,11 +15,10 @@ class Task:
         self.color_red = color_red
         self.color_blue = color_blue
         self.images_path = images_path
-        self.task_number = task_number
 
-    def task_1(self, task_number, task_description):
+    def task_1(self, task_number):
         init_window = InitTask(self.window_width, self.window_height)
-        init_window.start(1, task_description)
+        init_window.start(1)
 
         env = GameEnvironment(self.window_width, self.window_height, self.limit_up, self.limit_down,
                               self.color_red, self.color_blue, self.images_path)
@@ -34,10 +33,12 @@ class Task:
         red_line = [(x, self.limit_down), (x, self.limit_down)]
         blue_line = [(x, self.limit_down), (x, self.limit_down)]
 
-        # running = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number) is not None
-
         while i < 6:
-            frame, right_hand, left_hand = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number)
+            environment = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number, plot=False)
+            if environment is not None:
+                frame, right_hand, left_hand = environment
+            else:
+                return
 
             # set condition for new marker
             if mark1[i] - 5 <= left_hand <= mark1[i] + 5 and \
@@ -46,11 +47,12 @@ class Task:
                 i += 1
 
         task = EndTask(self.window_width, self.window_height)
-        task.end(self.task_number)
+        task.end(task_number)
 
-    def task_2(self, task_number, task_description, student_number, time, fox_size, rabbit_size):
+    def task_2(self, task_number, student_number, time, fox_size, rabbit_size,
+               track_right=True, track_left=True, canvas=True, markers=True):
         init_window = InitTask(self.window_width, self.window_height)
-        init_window.start(2, task_description)
+        init_window.start(task_number)
 
         env = GameEnvironment(self.window_width, self.window_height, self.limit_up, self.limit_down,
                               self.color_red, self.color_blue, self.images_path)
@@ -72,10 +74,14 @@ class Task:
         red_line = [(x, self.limit_down), (x, self.limit_down)]
         blue_line = [(x, self.limit_down), (x, self.limit_down)]
 
-        # running = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number) is not None
-
         while i <= n_iter - 100:
-            f, right, left = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number)
+            environment = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number,
+                                      track_right, track_left, canvas, markers)
+            if environment is not None:
+                f, right, left = environment
+            else:
+                return
+
             right_hand.append(right)
             left_hand.append(left)
             frame.append(f)
@@ -84,10 +90,20 @@ class Task:
 
             i += 5
             x += 1.4
-            # red_line.append((x, left))
-            # blue_line.append((x, right))
-            red_line.append((x, mark1[i]))
-            blue_line.append((x, mark2[i]))
+
+            if track_left:
+                red_line.append((x, left))
+            elif not track_left:
+                red_line.append((x, mark1[i]))
+            else:
+                print "error on task.py(task_2)"
+
+            if track_right:
+                blue_line.append((x, right))
+            elif not track_right:
+                blue_line.append((x, mark2[i]))
+            else:
+                print "error on task.py(task_2)"
 
         d = {"right_hand": pd.Series(right_hand),
              "left_hand": pd.Series(left_hand),
