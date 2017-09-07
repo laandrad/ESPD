@@ -3,6 +3,7 @@ from endtask import EndTask
 from inittask import InitTask
 import random
 import pandas as pd
+import png
 
 
 class Task:
@@ -74,7 +75,7 @@ class Task:
         red_line = [(x, self.limit_down), (x, self.limit_down)]
         blue_line = [(x, self.limit_down), (x, self.limit_down)]
 
-        while i <= n_iter - 100:
+        while i <= n_iter - 10:
             environment = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number,
                                       track_right, track_left, canvas, markers)
             if environment is not None:
@@ -88,8 +89,8 @@ class Task:
             mark_right.append(mark1[i])
             mark_left.append(mark2[i])
 
-            i += 5
-            x += 1.4
+            i += 1
+            x += 1
 
             if track_left:
                 red_line.append((x, left))
@@ -104,6 +105,9 @@ class Task:
                 blue_line.append((x, mark2[i]))
             else:
                 print "error on task.py(task_2)"
+
+
+        temp_image.flush()
 
         d = {"right_hand": pd.Series(right_hand),
              "left_hand": pd.Series(left_hand),

@@ -19,20 +19,20 @@ def main():
     # set plotting coordinates
     a = LVSystem(400, 100, 0.01, 2.5 / 40000, 0.01, 1.2 / 40000)
     time, fox_size, rabbit_size = a.simulate(int(window_width * 2))
-    b0 = 30
-    b1 = 0.8
+    b0 = -20
+    b1 = 0.6
     fox_size = [limit_down - m * b1 + b0 for m in fox_size]
     rabbit_size = [limit_down - m * b1 + b0 for m in rabbit_size]
 
-    # Task 1
-    env = Task(window_width, window_height, limit_up, limit_down,
-               color_red, color_blue, images_path)
-    env.task_1(1)
-
-    # Task 2
-    env = Task(window_width, window_height, limit_up, limit_down,
-               color_red, color_blue, images_path)
-    env.task_2(2, student, time, fox_size, rabbit_size, canvas=False)
+    # # Task 1
+    # env = Task(window_width, window_height, limit_up, limit_down,
+    #            color_red, color_blue, images_path)
+    # env.task_1(1)
+    #
+    # # Task 2
+    # env = Task(window_width, window_height, limit_up, limit_down,
+    #            color_red, color_blue, images_path)
+    # env.task_2(2, student, time, fox_size, rabbit_size, canvas=False)
 
     # task 3
     env = Task(window_width, window_height, limit_up, limit_down,

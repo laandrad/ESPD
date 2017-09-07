@@ -17,7 +17,7 @@ class EndTask:
         pygame.font.init()
         font = pygame.font.SysFont("comicsansms", 40)
         text1 = font.render("Good Job!", 4, (0, 0, 0))
-        text2 = font.render("End of Task: " + str(task_number) + " of 9", 4, (0, 0, 0))
+        text2 = font.render("End of Task: " + str(task_number) + " of 8", 4, (0, 0, 0))
         text3 = font.render("Press Space to Continue", 4, (0, 0, 0))
 
         while True:
