@@ -7,3 +7,11 @@ Use both hands to follow markers and note how the plot changes
 Use left hand to control the fox population according to how the rabbit changes
 Use right hand to control the rabbit population according to how the fox changes
 Use hands to control both populations according to how each population changes
+The bars represent the population size. Are there more foxes than rabbits?
+Observe how these populations change over time in this ecosystem
+Observe how the bars correspond to the lines on the right
+Observe how the foxes change over time
+Observe how the rabbits change over time
+If the number of foxes goes up, what happens to the number of rabbits?
+If the number rabbits goes up, what happens to the number of foxes?
+Describe how the two populations change together over time
