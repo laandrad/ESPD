@@ -1,4 +1,5 @@
 import pygame
+import sys
 
 
 class InitTask:
@@ -32,6 +33,9 @@ class InitTask:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                     pygame.quit()
                     return
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    pygame.quit()
+                    sys.exit(0)
 
             screen.fill((255, 255, 255))
             screen.blit(text1, (self.window_width / 2 - text1.get_width() / 2, self.window_height * 1 / 6))
@@ -40,4 +44,3 @@ class InitTask:
 
             # display and wait for tick
             pygame.display.flip()
-

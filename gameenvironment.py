@@ -1,6 +1,5 @@
 from myleaptools import *
 from pygametools import *
-import tempfile
 
 
 class GameEnvironment:
@@ -30,6 +29,7 @@ class GameEnvironment:
 
     def on_task(self, mark1, mark2, red_pointlist, blue_pointlist, task_number,
                 track_right=True, track_left=True, plot=True, markers=True):
+
         screen = pygame.display.set_mode((self.window_width, self.window_height))
 
         pygame.display.set_caption('ESPD - Task ' + str(task_number))
@@ -104,15 +104,10 @@ class GameEnvironment:
             pygame.draw.lines(screen, self.color_blue, False, blue_pointlist, 2)
             pygame.draw.lines(screen, self.color_red, False, red_pointlist, 2)
 
-        # make temp image file of the screen
-        with tempfile.NamedTemporaryFile() as temp_image:
-            pygame.save(screen, temp_image)
-            global temp_image
-
         # display and wait for tick
         pygame.display.flip()
-        clock.tick(120)
+        clock.tick(60)
 
-        return frame, right_hand, left_hand
+        return frame, right_hand, left_hand, screen
 
 
