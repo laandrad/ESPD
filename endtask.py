@@ -9,9 +9,17 @@ class EndTask:
         self.screen = screen
         self.color_green = color_green
 
-    def end(self, task_number):
+    def end(self, task_number, control=False):
+
+        if control:
+            task_number2 = task_number - 8
+            total_tasks = 8
+        else:
+            task_number2 = task_number
+            total_tasks = 8
+
         # screen = pygame.display.set_mode((self.window_width, self.window_height))
-        pygame.display.set_caption('ESPD - Task ' + str(task_number))
+        pygame.display.set_caption('ESPD - Task ' + str(task_number2))
 
         # initialize pygame setup
         pygame.init()
@@ -19,7 +27,7 @@ class EndTask:
         # Create end of task window
         pygame.font.init()
         font = pygame.font.SysFont("comicsansms", 30)
-        text1 = font.render("End of Task: " + str(task_number) + " of 8", 4, self.color_green)
+        text1 = font.render("End of Task: " + str(task_number2) + " of " + str(total_tasks), 4, self.color_green)
         text2 = font.render("Good Job!", 4, self.color_green)
         text3 = font.render("Press Space to Continue", 4, self.color_green)
 
@@ -34,7 +42,7 @@ class EndTask:
 
             # self.screen.fill((255, 255, 255))
             self.screen.blit(text1, (self.window_width / 2 - text1.get_width() / 2, 30))
-            self.screen.blit(text2, (self.window_width / 4 - text2.get_width(), self.window_height * 2 / 6))
+            self.screen.blit(text2, (self.window_width / 4, self.window_height * 2 / 6))
             self.screen.blit(text3, (self.window_width / 2 - text3.get_width() / 2, self.window_height * 7 / 8))
 
             # display and wait for tick

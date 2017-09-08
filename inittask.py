@@ -14,9 +14,17 @@ class InitTask:
 
         global task_description
 
-    def start(self, task_number):
+    def start(self, task_number, control=False):
+
+        if control:
+            task_number2 = task_number - 8
+            total_tasks = 8
+        else:
+            task_number2 = task_number
+            total_tasks = 8
+
         screen = pygame.display.set_mode((self.window_width, self.window_height))
-        pygame.display.set_caption('ESPD - Task ' + str(task_number))
+        pygame.display.set_caption('ESPD - Task ' + str(task_number2))
 
         # initialize pygame setup
         pygame.init()
@@ -24,7 +32,7 @@ class InitTask:
         # Create end of task window
         pygame.font.init()
         font1 = pygame.font.SysFont("comicsansms", 30)
-        text1 = font1.render("Task: " + str(task_number) + " of 8", 4, (0, 0, 0))
+        text1 = font1.render("Task: " + str(task_number2) + " of " + str(total_tasks), 4, (0, 0, 0))
         text2 = font1.render(task_description[task_number], 4, (0, 0, 0))
         text3 = font1.render("Press Space to Start", 4, (0, 0, 0))
 
