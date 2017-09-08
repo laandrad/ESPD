@@ -3,17 +3,19 @@ from endtask import EndTask
 from inittask import InitTask
 import random
 import pandas as pd
+import pygame
 
 
 class Task:
     def __init__(self, window_width, window_height, limit_up, limit_down,
-                 color_red, color_blue, images_path):
+                 color_red, color_blue, color_green, images_path):
         self.window_width = window_width
         self.window_height = window_height
         self.limit_up = limit_up
         self.limit_down = limit_down
         self.color_red = color_red
         self.color_blue = color_blue
+        self.color_green = color_green
         self.images_path = images_path
 
     def task_1(self, task_number):
@@ -74,11 +76,11 @@ class Task:
         red_line = [(x, self.limit_down), (x, self.limit_down)]
         blue_line = [(x, self.limit_down), (x, self.limit_down)]
 
-        while i <= n_iter - 100:
+        while i <= n_iter - 500:
             environment = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number,
                                       track_right, track_left, canvas, markers)
             if environment is not None:
-                f, right, left = environment
+                f, right, left, screen = environment
             else:
                 return
 
@@ -88,8 +90,8 @@ class Task:
             mark_right.append(mark1[i])
             mark_left.append(mark2[i])
 
-            i += 5
-            x += 1.4
+            i += 15
+            x += 1
 
             if track_left:
                 red_line.append((x, left))
@@ -117,5 +119,7 @@ class Task:
 
         df.to_csv(file_folder + file_name, index=False)
 
-        task = EndTask(self.window_width, self.window_height)
+        pygame.image.save(screen, file_folder + file_name[:-4] + ".png")
+
+        task = EndTask(self.window_width, self.window_height, screen, self.color_green)
         task.end(task_number)

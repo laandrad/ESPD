@@ -29,13 +29,17 @@ class GameEnvironment:
 
     def on_task(self, mark1, mark2, red_pointlist, blue_pointlist, task_number,
                 track_right=True, track_left=True, plot=True, markers=True):
+
         screen = pygame.display.set_mode((self.window_width, self.window_height))
+
         pygame.display.set_caption('ESPD - Task ' + str(task_number))
 
         for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                return
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 pygame.quit()
-                return
+                sys.exit(0)
 
         # get hands position
         frame, right_hand, left_hand, foxes_size, rabbits_size = listener.on_frame(controller,
@@ -104,6 +108,6 @@ class GameEnvironment:
         pygame.display.flip()
         clock.tick(60)
 
-        return frame, right_hand, left_hand
+        return frame, right_hand, left_hand, screen
 
 

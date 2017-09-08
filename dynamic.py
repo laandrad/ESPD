@@ -42,6 +42,13 @@ class LVSystem:
 # a = LVSystem(400, 100, 0.01, 2.5 / 40000, 0.01, 1.2 / 40000)
 # time, prey, pred = a.simulate(3000)
 #
+# import pandas as pd
+#
+# d = {"prey": pd.Series(prey),
+#      "pred": pd.Series(pred)}
+# df = pd.DataFrame(d)
+# df.to_csv("/Users/alejandro/Dropbox (Personal)/Dissertation/Python Files/LVdynamic.csv")
+#
 #
 # plotly.offline.plot({
 #     "data": [Scatter(x=time, y=prey, name="Prey", mode="lines"),
