@@ -1,9 +1,14 @@
-from tasks import Task
-from dynamic import LVSystem
 import sys
+import timeit
+
+from dynamic import LVSystem
+from tasks import Task
 
 
 def main():
+
+    big_tic = timeit.default_timer()
+
     # set constants
     images_path = "/Users/alejandro/Dropbox (Personal)/Dissertation/Python Files/ESPD/images/"
     window_width = 1366
@@ -32,27 +37,27 @@ def main():
     # Task 1
     env.task_1(1)
 
-    # Task 2
-    env.task_2(2, student, time, fox_size, rabbit_size, canvas=False)
-
-    # task 3
+    # task 2
     env.task_2(3, student, time, fox_size, rabbit_size, track_right=False)
 
-    # task 4
+    # task 3
     env.task_2(4, student, time, fox_size, rabbit_size, track_left=False)
 
-    # task 5
+    # task 4
     env.task_2(5, student, time, fox_size, rabbit_size)
 
-    # task 6
+    # task 5
     env.task_2(6, student, time, fox_size, rabbit_size, markers=False, track_right=False)
 
-    # task 7
+    # task 6
     env.task_2(7, student, time, fox_size, rabbit_size, markers=False, track_left=False)
 
-    # task 8
+    # task 7
     env.task_2(8, student, time, fox_size, rabbit_size, markers=False)
 
+    # compute total time
+    big_toc = timeit.default_timer()
+    print "total interview time:", (big_toc - big_tic) / 60
 
 if __name__ == "__main__":
     main()

@@ -4,7 +4,6 @@ from inittask import InitTask
 import random
 import pandas as pd
 import pygame
-import sys
 
 
 class Task:
