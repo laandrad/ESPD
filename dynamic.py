@@ -1,6 +1,3 @@
-import plotly
-from plotly.graph_objs import Scatter, Layout
-
 
 class LVSystem:
     def __init__(self, init_prey, init_pred, prey_birth_rate, prey_predation_rate, pred_death_rate, pred_reprod_rate):
@@ -19,8 +16,6 @@ class LVSystem:
         pred = [y]
 
         for i in xrange(n_iter):
-            # print "Cambio x: " + str(self.a * x) + " " + str(- self.b * x * y)
-            # print "Cambio y: " + str(-self.m * y) + " " + str(self.n * x * y)
             x += self.a * x - self.b * x * y
             y += -self.m * y + self.n * x * y
 
@@ -31,8 +26,6 @@ class LVSystem:
 
             prey.append(x)
             pred.append(y)
-
-            # print "prey:", x, "predator:", y
 
         return range(0, n_iter), prey, pred
 
@@ -49,7 +42,7 @@ class LVSystem:
 # df = pd.DataFrame(d)
 # df.to_csv("/Users/alejandro/Dropbox (Personal)/Dissertation/Python Files/LVdynamic.csv")
 #
-#
+# from plotly.graph_objs import Scatter, Layout
 # plotly.offline.plot({
 #     "data": [Scatter(x=time, y=prey, name="Prey", mode="lines"),
 #              Scatter(x=time, y=pred, name="Predator", mode="lines")],

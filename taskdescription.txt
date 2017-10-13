@@ -1,6 +1,5 @@
 Task Description
 Align hands with horizontal markers
-Use hands to follow horizontal markers
 Use left hand to follow left marker and note how the plot changes
 Use right hand to follow right marker and note how the plot changes
 Use both hands to follow markers and note how the plot changes
