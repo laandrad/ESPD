@@ -90,8 +90,8 @@ class Task:
             mark_right.append(mark1[i])
             mark_left.append(mark2[i])
 
-            i += 2
-            x += 0.5
+            i += 3
+            x += 0.75
 
             if track_left:
                 red_line.append((x, left))

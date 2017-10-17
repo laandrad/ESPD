@@ -38,22 +38,22 @@ def main():
     env.task_1(1)
 
     # task 2
-    env.task_2(3, student, time, fox_size, rabbit_size, track_right=False)
+    env.task_2(2, student, time, fox_size, rabbit_size, track_right=False)
 
     # task 3
-    env.task_2(4, student, time, fox_size, rabbit_size, track_left=False)
+    env.task_2(3, student, time, fox_size, rabbit_size, track_left=False)
 
     # task 4
-    env.task_2(5, student, time, fox_size, rabbit_size)
+    env.task_2(4, student, time, fox_size, rabbit_size)
 
     # task 5
-    env.task_2(6, student, time, fox_size, rabbit_size, markers=False, track_right=False)
+    env.task_2(5, student, time, fox_size, rabbit_size, markers=False, track_right=False)
 
     # task 6
-    env.task_2(7, student, time, fox_size, rabbit_size, markers=False, track_left=False)
+    env.task_2(6, student, time, fox_size, rabbit_size, markers=False, track_left=False)
 
     # task 7
-    env.task_2(8, student, time, fox_size, rabbit_size, markers=False)
+    env.task_2(7, student, time, fox_size, rabbit_size, markers=False)
 
     # compute total time
     big_toc = timeit.default_timer()
