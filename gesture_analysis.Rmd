@@ -3,13 +3,12 @@ title: 'Gesture Analysis: Similarity Between Elicited and Enacted Gestures'
 author: "Alejandro Andrade"
 date: "10/6/2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
-setwd("~/Dropbox (Personal)/Dissertation/Python Files")
 
 # load packages and core clusters
 library(dplyr)
@@ -39,7 +38,9 @@ myCores = makeCluster(detectCores())
 ## Summary
 This brief paper summarizes my analysis of hand data extracted from the ESPD. The ESPD is an instructional system that cues the movement of the hands to create embodied represenations of nonlinear dynamics of a predator-prey ecosystem (see Figure 1).  
 
+<center>
 ![The ESPD instructional system](ESPD.jpg)
+</center>
   
 The goal of the analysis is to determine how closely the student is able to enact the elicited movement. In other words, the question is: Can we use some quantitative features of the student hand movements, as collected in the ESPD log data, to measure how close are these movements to the computer elicited movement? 
   
@@ -50,14 +51,14 @@ The analysis consists of four phases: (1) preprocessing, (2) state sequence mode
 ## 1. Preprocessing
 The ESPD log captures the position of the hands and the markers (the automated horizontal bars used in cuing student movement of the hands). Table 1 shows the first 6 observations of the ESPD raw data. 
 ```{r load}
-dat = read.csv("Student_Files/S001_task005.csv") %>% transmute(left_mark = mark_left,
-                                                               right_mark = mark_right,
-                                                               left_hand = left_hand,
-                                                               right_hand = right_hand)
+dat = read.csv("S001_task005.csv") %>% transmute(left_mark = mark_left,
+                                                 right_mark = mark_right,
+                                                 left_hand = left_hand,
+                                                 right_hand = right_hand)
 head(dat) %>% round %>% kable(caption = "ESPD raw data", format = "latex", align = "c")
 
-dat2 = read.csv("Student_Files/S002_task005.csv")
-hand2 = dat2 %>% transmute(norm_left_hand = 1 - (left_hand / max(left_hand)),
+hand2 = read.csv("S002_task005.csv") %>% 
+        transmute(norm_left_hand = 1 - (left_hand / max(left_hand)),
                          norm_right_hand = 1 - (right_hand / max(right_hand)))
 ```
 
@@ -70,8 +71,8 @@ hand = dat %>% transmute(norm_left_hand = 1 - (left_hand / max(left_hand)),
                          norm_right_hand = 1 - (right_hand / max(right_hand)))
 ```
 ```{r normalization2, fig.width=10, fig.height=4, fig.cap="\\label{fig:figs}(a) Computer elicited movement, (b) Student 1 enacted movement, and (c) Student 2 enacted movement."}
-compu = dat %>% transmute(pred = 1 - (mark_right / max(mark_right)),
-                          prey = 1 - (mark_left / max(mark_left)))
+compu = dat %>% transmute(pred = 1 - (right_mark / max(right_mark)),
+                          prey = 1 - (left_mark / max(left_mark)))
 
 par(mfrow = c(1, 3))
 plot(c(1, nrow(compu)/2), range(compu), type = "n", sub = "(a)",
@@ -175,30 +176,12 @@ responses %>% kable(caption = "Model Parameters", format = "latex", align = "c")
 ## 3. Sequence Similarity Calculation
 The next step is to use the model parameters to predict the latent states. Using the hand velocity and the model parameters, the posterior probability is calculated and a sequence of states is inferred for the enacted movement. Table 5 shows the first six entries for Student 1. Figure 3 shows the elicited and two enacted sequences.
 
-```{r seqPostPar, include=FALSE}
-predictStateSequence <- function(newdata, k = k.best, priormodel) {
-    newModel = depmix(list(vel_pred~1, vel_prey~1), 
-                  data = newdata,
-                  nstates = k,
-                  ntimes = rep(nrow(compu_vel), 3),
-                  family = list(gaussian(), gaussian()))
-    newModel = setpars(newModel, getpars(priormodel))
-    set.seed(80537)
-    newModel %>% 
-      fit(verbose = FALSE) %>% 
-      posterior %>% .$state
-}
-
-# predElictStates = predictStateSequence(newdata = compu_vel, priormodel = model)
-```
-
 ```{r seqPost, echo=TRUE}
 # fit enacted data by using the HMM model parameters
 hmm.data = rbind(compu_vel,
                  data.frame(vel_pred = hand_vel[,1], vel_prey = hand_vel[,2]),
                  data.frame(vel_pred = hand_vel2[,1], vel_prey = hand_vel2[,2]))
-predStates = predictStateSequence(newdata = hmm.data, 
-                                       priormodel = model)
+predStates = posterior(model, hmm.data)
 ```
 
 ```{r seqTable}
