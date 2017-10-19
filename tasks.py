@@ -124,40 +124,7 @@ class Task:
         task = EndTask(self.window_width, self.window_height, screen, self.color_green)
         task.end(task_number)
 
-    def task_3(self, task_number):
-        init_window = InitTask(self.window_width, self.window_height)
-        init_window.start(task_number, control=True)
-
-        env = GameEnvironment(self.window_width, self.window_height, self.limit_up, self.limit_down,
-                              self.color_red, self.color_blue, self.images_path)
-
-        # create two vectors with random marks
-        mark1 = random.sample(range(self.limit_up + 100, self.limit_down - 100), 7)
-        mark2 = random.sample(range(self.limit_up + 100, self.limit_down - 100), 7)
-        i = 0
-
-        # initialize task 1
-        x = 600
-        red_line = [(x, self.limit_down), (x, self.limit_down)]
-        blue_line = [(x, self.limit_down), (x, self.limit_down)]
-
-        while i < 6:
-            environment = env.on_task(mark1[i], mark2[i], red_line, blue_line, task_number, plot=False,
-                                      track_left=False, track_right=False, markers=False)
-            if environment is not None:
-                f, right, left, screen = environment
-            else:
-                return
-
-            # set condition for new marker
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
-                    i += 1
-
-        task = EndTask(self.window_width, self.window_height, screen, self.color_green)
-        task.end(task_number, control=True)
-
-    def task_4(self, task_number, student_number, time, fox_size, rabbit_size,
+    def task_3(self, task_number, student_number, time, fox_size, rabbit_size,
                track_right=False, track_left=False, canvas=True, markers=False):
         init_window = InitTask(self.window_width, self.window_height)
         init_window.start(task_number, control=True)
@@ -197,7 +164,7 @@ class Task:
             mark_left.append(mark2[i])
 
             i += 2
-            x += 0.5
+            x += 0.75
 
             if track_left:
                 red_line.append((x, left))
