@@ -1,0 +1,11 @@
+base
+dplyr
+nnet
+MASS
+Rsolnp
+depmixS4
+TraMineR
+knitr
+jpeg
+bindrcpp
+HMM

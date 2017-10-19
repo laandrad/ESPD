@@ -3,19 +3,20 @@ title: 'Gesture Analysis: Similarity Between Elicited and Enacted Gestures'
 author: "Alejandro Andrade"
 date: "10/6/2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, cache = TRUE)
-setwd("~/Dropbox (Personal)/Dissertation/Python Files")
 
 # load packages and core clusters
 library(dplyr)
 library(depmixS4)
+library(HMM)
 library(TraMineR)
 library(knitr)
+library(kableExtra)
 library(parallel)
 library(jpeg)
 
@@ -38,8 +39,13 @@ myCores = makeCluster(detectCores())
 
 ## Summary
 This brief paper summarizes my analysis of hand data extracted from the ESPD. The ESPD is an instructional system that cues the movement of the hands to create embodied represenations of nonlinear dynamics of a predator-prey ecosystem (see Figure 1).  
-
-![The ESPD instructional system](ESPD.jpg)
+```{r snapshot, fig.align='center', fig.cap="Snapshot of the Embodied Simulation of Population Dynamics"}
+```
+<center>
+![](ESPD.jpg)
+  
+Figure 1. Snapshot of the Embodied Simulation of Population Dynamics.  
+</center>  
   
 The goal of the analysis is to determine how closely the student is able to enact the elicited movement. In other words, the question is: Can we use some quantitative features of the student hand movements, as collected in the ESPD log data, to measure how close are these movements to the computer elicited movement? 
   
@@ -50,14 +56,15 @@ The analysis consists of four phases: (1) preprocessing, (2) state sequence mode
 ## 1. Preprocessing
 The ESPD log captures the position of the hands and the markers (the automated horizontal bars used in cuing student movement of the hands). Table 1 shows the first 6 observations of the ESPD raw data. 
 ```{r load}
-dat = read.csv("Student_Files/S001_task005.csv") %>% transmute(left_mark = mark_left,
-                                                               right_mark = mark_right,
-                                                               left_hand = left_hand,
-                                                               right_hand = right_hand)
-head(dat) %>% round %>% kable(caption = "ESPD raw data", format = "latex", align = "c")
+dat = read.csv("S001_task005.csv") %>% transmute(left_mark = mark_left,
+                                                 right_mark = mark_right,
+                                                 left_hand = left_hand,
+                                                 right_hand = right_hand)
+head(dat) %>% round %>% kable(caption = "Table 1. ESPD raw data", format = "html") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 
-dat2 = read.csv("Student_Files/S002_task005.csv")
-hand2 = dat2 %>% transmute(norm_left_hand = 1 - (left_hand / max(left_hand)),
+hand2 = read.csv("S002_task005.csv") %>% 
+        transmute(norm_left_hand = 1 - (left_hand / max(left_hand)),
                          norm_right_hand = 1 - (right_hand / max(right_hand)))
 ```
 
@@ -69,9 +76,9 @@ The raw data in the form of position values are first normalized dividing each v
 hand = dat %>% transmute(norm_left_hand = 1 - (left_hand / max(left_hand)),
                          norm_right_hand = 1 - (right_hand / max(right_hand)))
 ```
-```{r normalization2, fig.width=10, fig.height=4, fig.cap="\\label{fig:figs}(a) Computer elicited movement, (b) Student 1 enacted movement, and (c) Student 2 enacted movement."}
-compu = dat %>% transmute(pred = 1 - (mark_right / max(mark_right)),
-                          prey = 1 - (mark_left / max(mark_left)))
+```{r normalization2, fig.width=10, fig.height=4, fig.cap="Figure 2. (a) Elicited movement, (b) enacted movement Student 1, and (c) enacted movement Student 2."}
+compu = dat %>% transmute(pred = 1 - (right_mark / max(right_mark)),
+                          prey = 1 - (left_mark / max(left_mark)))
 
 par(mfrow = c(1, 3))
 plot(c(1, nrow(compu)/2), range(compu), type = "n", sub = "(a)",
@@ -118,8 +125,9 @@ hand_vel2 = with(hand2, {
 data.frame(dat[-1, ] %>% dplyr::select(contains("hand")) %>% round, 
            hand[-1, ], hand_vel) %>%
   round(3) %>% head %>%
-  kable(caption = "Normalization and Velocity Calculation", 
-        format = "latex", align = "c", row.names = F)
+  kable(caption = "Table 2. Normalization and Velocity Calculation", 
+        format = "html", row.names = F) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ## 2. State Sequence Modeling 
@@ -133,6 +141,7 @@ getFit <- function(k, dat) {
                              nstates = k,
                              family = list(gaussian(), gaussian()))
   cat('--Fitting model with', k, 'latent states--\n')
+  set.seed(80537)
   model = depmixS4::fit(object = dat.hhm)
   c(k, AIC(model), BIC(model))
 }
@@ -144,16 +153,15 @@ parWorker <- function() {
     getFit(k, compu_vel[1:600, ])
   }
 }
-
 # run parallel analysis to find better fit
-set.seed(80537)
 fit = parSapply(myCores, 5:15, parWorker()) %>% t
 colnames(fit) = c('k', 'AIC', 'BIC')
 
 k.best = fit[which.min(fit[, 3]), 1]
 k.best
 best.bic = fit[which.min(fit[, 3]), 3] %>% round %>% as.character
-
+```
+```{r bestFitModel, include=FALSE}
 dat.hhm = depmix(list(vel_pred~1, vel_prey~1), 
                            data = compu_vel[1:600, ],
                            nstates = k.best,
@@ -163,56 +171,142 @@ model = fit(dat.hhm)
 responses = summary(model)
 ```
 
-According to Table 4, the best models is a `r k.best`-state model because it has the lowest BIC = `r best.bic`. Details of this model's mixture parameters are shown in Table 5. An interpretation of the latent states is given by the sign and magnitude of the mean velocity of the hands. For instance, State 1 shows a kind of gesture where both hands (*mean_left_vel* and *mean_right_vel*) move down, but the right hand moves twice as fast as the left. State 2 shows a gesture where the left hand moves down and the right hand moves up three times faster than the left.
+According to Table 4, the best models is a `r k.best`-state model because it has the lowest BIC = `r best.bic`. Details of this model's mixture parameters are shown in Table 5. An interpretation of the latent states is given by the sign and magnitude of the mean velocity of the hands. If the left hand moves close to `r responses[1, 1]` speed and the right hand `r responses[1, 3]`, the more likely it would be the gesture is of a State 1 type. 
 
-```{r paramTable, cache=FALSE}
-fit %>% kable(caption = "HMM Model Selection", digits = 2, format = "latex", align = "c")
-
-colnames(responses) = c("mean_left_vel", "sd_left_vel", "mean_right_vel", "sd_right_vel")
-responses %>% kable(caption = "Model Parameters", format = "latex", align = "c")
+```{r paramTable}
+fit %>% kable(caption = "Table 3. HMM Model Selection", 
+              digits = 2, format = "html") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
+colnames(responses) = c("mean_left_vel", "sd_left_vel", 
+                        "mean_right_vel", "sd_right_vel")
+responses %>% kable(caption = "Table 4. Model Parameters", 
+                    format = "html") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ## 3. Sequence Similarity Calculation
-The next step is to use the model parameters to predict the latent states. Using the hand velocity and the model parameters, the posterior probability is calculated and a sequence of states is inferred for the enacted movement. Table 5 shows the first six entries for Student 1. Figure 3 shows the elicited and two enacted sequences.
+```{r viterbi, include=FALSE}
+# predictive algorithm of latent states based on viterbi path 
+# given a set of HMM model parameters
+predictStates <- function(x, m, mu, sigma, gamma, delta=NULL, ...) {
+        # this function is based on a gaussian HMM viterbi algorithm
+        # x is a matrix of observations of size N * X
+        # m is a scalar with the number of states
+        # mu is a vector with the state conditional means (1 * M)
+        # sigma is a vector with the state conditional stdev (1 * M)
+        # gamma is a square matrix of transition probabilities of size (M * M)
+        # delta is a vector with the initial state probabilities (1 * M)
+        
+        if (!require(dplyr)) {
+                install.packages("dplyr")
+        }
+        library(dplyr)
+        
+        if (is.null(delta)) {
+                delta = solve(t(diag(m) - gamma + 1), rep(1, m))
+        }
+        n = nrow(x) # number of observations
+        
+        # compute likelihood
+        gaussProbs = suppressWarnings(gaussProb(x, m, mu, sigma))
 
-```{r seqPostPar, include=FALSE}
-predictStateSequence <- function(newdata, k = k.best, priormodel) {
-    newModel = depmix(list(vel_pred~1, vel_prey~1), 
-                  data = newdata,
-                  nstates = k,
-                  ntimes = rep(nrow(compu_vel), 3),
-                  family = list(gaussian(), gaussian()))
-    newModel = setpars(newModel, getpars(priormodel))
-    set.seed(80537)
-    newModel %>% 
-      fit(verbose = FALSE) %>% 
-      posterior %>% .$state
+        # compute posterior
+        xi = matrix(0, n, m) # initialize matrix
+        xi[1,] = delta * gaussProbs[1, ] # compute first observation
+        xi[1,] = gaussProbs[1, ] # compute first observation
+        # for the rest observations
+        for (i in 2:n) {
+                foo = apply(xi[i - 1, ] * gamma, 2, max) * gaussProbs[i, ]
+                xi[i, ] = foo / sum(foo)
+                if (sum(xi[i, ]) < .99) {
+                  cat("\nError: probs don't add to 1 at step", t, " --\n ")
+                  print(foo)
+                  stop("bad posterior probabilites")
+                }
+
+        }
+
+        # compute backward state
+        iv = numeric(n)
+        iv[n] = which.max(xi[n-1, ])
+        for (i in (n - 1):1) {
+                iv[i] = which.max(gamma[, iv[i + 1]] * xi[i, ])
+        }
+        return(posterior = iv)
 }
 
-# predElictStates = predictStateSequence(newdata = compu_vel, priormodel = model)
+# help function
+gaussProb <- function(x, m, mu, sigma) {
+        # returns a matrix of P(Ci|X) of size (N * M)
+        
+        # smooth data to get rid of outliers
+        x = x %>% sapply(smooth)
+        
+        # for i in m states
+        gaussProbX1 = sapply(1:m, function(i) {
+                dnorm(x[, 1], mu[i, 1], sigma[i, 1]) 
+        })
+        gaussProbX2 = sapply(1:m, function(i) {
+                dnorm(x[, 2], mu[i, 2], sigma[i, 2]) 
+        })
+        
+        # make sure there are no NA's probabilities
+        gaussProbX1[is.na(gaussProbX1) | gaussProbX1 == 0.000000e+00] = 1e-30
+        gaussProbX2[is.na(gaussProbX2) | gaussProbX1 == 0.000000e+00] = 1e-30
+        
+        # for time t in n
+        n = nrow(x)
+        gaussProbX = matrix(0, ncol = m, nrow = n)
+        for (t in 1:n) {
+          foo = gaussProbX1[t, ] * gaussProbX2[t, ]
+          if (sum(foo) == 0) {
+            cat("\nError: gaussian inner product sums to 0 at step", t, " --\n ")
+            print(foo)
+            stop("bad gaussians")
+          }
+          gaussProbX[t, ] = foo / sum(foo)
+          if (sum(gaussProbX[t, ]) < .99) {
+            cat("\nError: probs don't add to 1 at step", t, " --\n ")
+            print(sum(gaussProbX[t, ]))
+            stop("bad probabilities")
+          }
+        }
+        
+        return(gaussProbX)
+}
 ```
+
+The next step is to use the model parameters to predict the latent states. Using the hand velocity and the HMM model parameters, the posterior probability is calculated and a sequence of states is inferred for the enacted movement. This calculation uses a function of my own development, called *predictStates*, which calculates the most likely hidden states given a gaussian parameterization with *m* states and 2 observed continuous variables. Table 5 shows the first six entries for Student 1. Figure 3 shows the elicited and two enacted sequences.
 
 ```{r seqPost, echo=TRUE}
-# fit enacted data by using the HMM model parameters
-hmm.data = rbind(compu_vel,
-                 data.frame(vel_pred = hand_vel[,1], vel_prey = hand_vel[,2]),
-                 data.frame(vel_pred = hand_vel2[,1], vel_prey = hand_vel2[,2]))
-predStates = predictStateSequence(newdata = hmm.data, 
-                                       priormodel = model)
+# get HMM model parameters
+m = k.best
+emissionParams = getpars(model)[(m^2 + m + 1):length(getpars(model))] %>% 
+        matrix(ncol = 4, byrow = T)
+mu = emissionParams[, c(1:3)]
+sigma = emissionParams[, c(2:4)]
+gamma = getpars(model)[(m + 1):(m^2 + m)] %>% 
+        matrix(ncol = m, byrow = T)
+
+# predict most likely sequence of states
+elicited = predictStates(compu_vel, m, mu, sigma, gamma)
+enactedS1 = predictStates(hand_vel, m, mu, sigma, gamma)
+enactedS2 = predictStates(hand_vel2, m, mu, sigma, gamma)
 ```
 
-```{r seqTable}
+```{r seqTable, echo=TRUE}
 data.frame(hand_vel[1:6, ], 
-           State = predStates[nrow(hand_vel):nrow(hand_vel) + 6]) %>% 
-  kable(caption = "Predicted States", digits = 4, format = "latex", align = "c")
+           State = enactedS1[1:6]) %>% 
+  kable(caption = "Table 5. Predicted States", digits = 4, format = "html") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ```{r seq, echo=FALSE, include=FALSE, results=FALSE}
 # enacted.data2 = data.frame(vel_pred = hand_vel2[, 1], vel_prey = hand_vel2[, 2])
 # predEnactStates2 = predictStateSequence(newdata = enacted.data2, priormodel = model)
-seqdat = predStates %>% matrix(nrow = 3, byrow = T) %>% seqdef
+seqdat = rbind(elicited, enactedS1, enactedS2) %>% seqdef
 ```
-```{r seqPlot, fig.cap="(1) Elicited, (2) Student 1, and (3) Student 2 enacted Sequences", fig.height=4, fig.width=10}
+```{r seqPlot, fig.cap="Figure 3. (1) Elicited, (2) Student 1, and (3) Student 2 enacted Sequences", fig.height=4, fig.width=10}
 seqplot(seqdat[, 1:nrow(compu)/2], 
         border = NA, xtlab = "", ylab = NA, with.legend = "right")
 ```
@@ -231,8 +325,9 @@ To compute the number of transformations required to convert the enacted sequenc
 ```{r disVal}
 colnames(disVal) = c("Elicited", "Student1", "Student2")
 rownames(disVal) = colnames(disVal)
-disVal %>% kable(caption = "OM Distance Values", 
-                 format = "latex", align = "c", digits = 0)
+disVal %>% kable(caption = "Table 6. OM Distance Values", 
+                 format = "html", digits = 0) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ## Conclusion
