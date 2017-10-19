@@ -3,8 +3,8 @@ title: 'Gesture Analysis: Similarity Between Elicited and Enacted Gestures'
 author: "Alejandro Andrade"
 date: "10/6/2017"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -16,6 +16,7 @@ library(depmixS4)
 library(HMM)
 library(TraMineR)
 library(knitr)
+library(kableExtra)
 library(parallel)
 library(jpeg)
 
@@ -40,8 +41,12 @@ myCores = makeCluster(detectCores())
 This brief paper summarizes my analysis of hand data extracted from the ESPD. The ESPD is an instructional system that cues the movement of the hands to create embodied represenations of nonlinear dynamics of a predator-prey ecosystem (see Figure 1).  
 ```{r snapshot, fig.align='center', fig.cap="Snapshot of the Embodied Simulation of Population Dynamics"}
 ```
-![Snapshot of the Embodied Simulation of Population Dynamics.](ESPD.jpg)
- 
+<center>
+![](ESPD.jpg)
+  
+Figure 1. Snapshot of the Embodied Simulation of Population Dynamics.  
+</center>  
+  
 The goal of the analysis is to determine how closely the student is able to enact the elicited movement. In other words, the question is: Can we use some quantitative features of the student hand movements, as collected in the ESPD log data, to measure how close are these movements to the computer elicited movement? 
   
 Data are from two sources, the automated/elicited movement of predator and prey populations, and the student/enacted movement of both hands. The data is measured in pixels, and smaller values represent the hand being higher, and, conversely, larger values represent the hand being lower.  
@@ -55,7 +60,8 @@ dat = read.csv("S001_task005.csv") %>% transmute(left_mark = mark_left,
                                                  right_mark = mark_right,
                                                  left_hand = left_hand,
                                                  right_hand = right_hand)
-head(dat) %>% round %>% kable(caption = "ESPD raw data", format = "latex", align = "c")
+head(dat) %>% round %>% kable(caption = "Table 1. ESPD raw data", format = "html") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 
 hand2 = read.csv("S002_task005.csv") %>% 
         transmute(norm_left_hand = 1 - (left_hand / max(left_hand)),
@@ -70,7 +76,7 @@ The raw data in the form of position values are first normalized dividing each v
 hand = dat %>% transmute(norm_left_hand = 1 - (left_hand / max(left_hand)),
                          norm_right_hand = 1 - (right_hand / max(right_hand)))
 ```
-```{r normalization2, fig.width=10, fig.height=4, fig.cap="(a) Elicited movement, (b) enacted movement Student 1, and (c) enacted movement Student 2."}
+```{r normalization2, fig.width=10, fig.height=4, fig.cap="Figure 2. (a) Elicited movement, (b) enacted movement Student 1, and (c) enacted movement Student 2."}
 compu = dat %>% transmute(pred = 1 - (right_mark / max(right_mark)),
                           prey = 1 - (left_mark / max(left_mark)))
 
@@ -119,8 +125,9 @@ hand_vel2 = with(hand2, {
 data.frame(dat[-1, ] %>% dplyr::select(contains("hand")) %>% round, 
            hand[-1, ], hand_vel) %>%
   round(3) %>% head %>%
-  kable(caption = "Normalization and Velocity Calculation", 
-        format = "latex", align = "c", row.names = F)
+  kable(caption = "Table 2. Normalization and Velocity Calculation", 
+        format = "html", row.names = F) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ## 2. State Sequence Modeling 
@@ -167,12 +174,14 @@ responses = summary(model)
 According to Table 4, the best models is a `r k.best`-state model because it has the lowest BIC = `r best.bic`. Details of this model's mixture parameters are shown in Table 5. An interpretation of the latent states is given by the sign and magnitude of the mean velocity of the hands. If the left hand moves close to `r responses[1, 1]` speed and the right hand `r responses[1, 3]`, the more likely it would be the gesture is of a State 1 type. 
 
 ```{r paramTable}
-fit %>% kable(caption = "HMM Model Selection", 
-              digits = 2, format = "latex", align = "c")
+fit %>% kable(caption = "Table 3. HMM Model Selection", 
+              digits = 2, format = "html") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 colnames(responses) = c("mean_left_vel", "sd_left_vel", 
                         "mean_right_vel", "sd_right_vel")
-responses %>% kable(caption = "Model Parameters", 
-                    format = "latex", align = "c")
+responses %>% kable(caption = "Table 4. Model Parameters", 
+                    format = "html") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ## 3. Sequence Similarity Calculation
@@ -288,7 +297,8 @@ enactedS2 = predictStates(hand_vel2, m, mu, sigma, gamma)
 ```{r seqTable, echo=TRUE}
 data.frame(hand_vel[1:6, ], 
            State = enactedS1[1:6]) %>% 
-  kable(caption = "Predicted States", digits = 4, format = "latex", align = "c")
+  kable(caption = "Table 5. Predicted States", digits = 4, format = "html") %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ```{r seq, echo=FALSE, include=FALSE, results=FALSE}
@@ -296,7 +306,7 @@ data.frame(hand_vel[1:6, ],
 # predEnactStates2 = predictStateSequence(newdata = enacted.data2, priormodel = model)
 seqdat = rbind(elicited, enactedS1, enactedS2) %>% seqdef
 ```
-```{r seqPlot, fig.cap="(1) Elicited, (2) Student 1, and (3) Student 2 enacted Sequences", fig.height=4, fig.width=10}
+```{r seqPlot, fig.cap="Figure 3. (1) Elicited, (2) Student 1, and (3) Student 2 enacted Sequences", fig.height=4, fig.width=10}
 seqplot(seqdat[, 1:nrow(compu)/2], 
         border = NA, xtlab = "", ylab = NA, with.legend = "right")
 ```
@@ -315,8 +325,9 @@ To compute the number of transformations required to convert the enacted sequenc
 ```{r disVal}
 colnames(disVal) = c("Elicited", "Student1", "Student2")
 rownames(disVal) = colnames(disVal)
-disVal %>% kable(caption = "OM Distance Values", 
-                 format = "latex", align = "c", digits = 0)
+disVal %>% kable(caption = "Table 6. OM Distance Values", 
+                 format = "html", digits = 0) %>%
+  kable_styling(bootstrap_options = "striped", full_width = F)
 ```
 
 ## Conclusion

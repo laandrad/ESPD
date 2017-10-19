@@ -4,8 +4,9 @@ nnet
 MASS
 Rsolnp
 depmixS4
+HMM
 TraMineR
 knitr
 jpeg
 bindrcpp
-HMM
+kableExtra
