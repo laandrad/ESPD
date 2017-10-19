@@ -6,12 +6,12 @@ from tasks import Task
 
 
 def main():
-
+    # initialize clock
     big_tic = timeit.default_timer()
 
     # set constants
     images_path = "/Users/alejandro/Dropbox (Personal)/Dissertation/Python Files/ESPD/images/"
-    window_width = 1366
+    window_width = 1100
     window_height = 600
     limit_up = 150
     limit_down = window_height - 100
@@ -24,7 +24,7 @@ def main():
 
     # set plotting coordinates
     a = LVSystem(400, 100, 0.01, 2.5 / 40000, 0.01, 1.2 / 40000)
-    time, fox_size, rabbit_size = a.simulate(int(window_width * 2))
+    time, fox_size, rabbit_size = a.simulate(int(window_width * 1.7))
     b0 = -20
     b1 = 0.6
     fox_size = [limit_down - m * b1 + b0 for m in fox_size]
@@ -47,13 +47,19 @@ def main():
     env.task_2(4, student, time, fox_size, rabbit_size)
 
     # task 5
-    env.task_2(5, student, time, fox_size, rabbit_size, markers=False, track_right=False)
+    env.task_2(5, student, time, fox_size, rabbit_size)
+
+    # task 5
+    env.task_2(6, student, time, fox_size, rabbit_size, markers=False, track_right=False)
 
     # task 6
-    env.task_2(6, student, time, fox_size, rabbit_size, markers=False, track_left=False)
+    env.task_2(7, student, time, fox_size, rabbit_size, markers=False, track_left=False)
 
     # task 7
-    env.task_2(7, student, time, fox_size, rabbit_size, markers=False)
+    env.task_2(8, student, time, fox_size, rabbit_size, markers=False)
+
+    # task 8
+    env.task_2(9, student, time, fox_size, rabbit_size, markers=False)
 
     # compute total time
     big_toc = timeit.default_timer()

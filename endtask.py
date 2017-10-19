@@ -12,11 +12,11 @@ class EndTask:
     def end(self, task_number, control=False):
 
         if control:
-            task_number2 = task_number - 8
-            total_tasks = 8
+            task_number2 = task_number - 9
+            total_tasks = 7
         else:
             task_number2 = task_number
-            total_tasks = 8
+            total_tasks = 9
 
         # screen = pygame.display.set_mode((self.window_width, self.window_height))
         pygame.display.set_caption('ESPD - Task ' + str(task_number2))
