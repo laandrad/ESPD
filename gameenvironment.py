@@ -82,9 +82,6 @@ class GameEnvironment:
         if markers:
             pygame.draw.line(screen, (0, 0, 0), (85, mark1), (85 + 50, mark1), 5)
             pygame.draw.line(screen, (0, 0, 0), (270, mark2), (270 + 50, mark2), 5)
-        else:
-            pygame.draw.line(screen, (255, 255, 255), (85, mark1), (85 + 50, mark1), 5)
-            pygame.draw.line(screen, (255, 255, 255), (270, mark2), (270 + 50, mark2), 5)
 
         # draw plot canvas
         if plot:
