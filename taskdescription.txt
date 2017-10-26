@@ -4,14 +4,14 @@ Use left hand to follow left marker
 Use right hand to follow right marker
 Use both hands to follow markers
 One more time!
-Use left hand to control the fox population
-Use right hand to control the rabbit population
+If the rabbits go up, what happens to the foxes?
+If the foxes go up, what happens to the rabbits?
 Use both hands to control the two populations
 One more time!
 The bars represent the population size of foxes and rabbits
 Observe how the bars correspond to the lines on the right
 Observe how the foxes change over time
 Observe how the rabbits change over time
-If the foxes go up, what happens to the rabbits?
 If the rabbits go up, what happens to the foxes?
+If the foxes go up, what happens to the rabbits?
 Let's observe one last time the changes in these two populations

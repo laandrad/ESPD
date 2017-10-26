@@ -3,7 +3,6 @@ from pygametools import *
 
 
 class GameEnvironment:
-
     def __init__(self, window_width, window_height, limit_up, limit_down,
                  color_red, color_blue, images_path):
         self.window_width = window_width
@@ -18,6 +17,10 @@ class GameEnvironment:
         global clock
         global listener
         global controller
+        global fox
+        global rabbit
+        global foxes
+        global rabbits
 
         # initialize pygame setup
         pygame.init()
@@ -26,6 +29,11 @@ class GameEnvironment:
         # Create a sample listener and controller for the LeapMotion sensor
         listener = SampleListener()
         controller = Leap.Controller()
+
+        fox = Fox(self.limit_down)
+        rabbit = Rabbit(self.limit_down)
+        foxes = Foxes(self.limit_up, 4)
+        rabbits = Rabbits(self.limit_up, 4)
 
     def on_task(self, mark1, mark2, red_pointlist, blue_pointlist, task_number,
                 track_right=True, track_left=True, plot=True, markers=True):
@@ -42,17 +50,13 @@ class GameEnvironment:
                 sys.exit(0)
 
         # get hands position
-        frame, right_hand, left_hand, foxes_size, rabbits_size = listener.on_frame(controller,
-                                                                                   self.limit_down,
-                                                                                   self.limit_up,
-                                                                                   track_right,
-                                                                                   track_left)
+        frame, right_hand, left_hand = listener.on_frame(controller,
+                                                         self.limit_down,
+                                                         self.limit_up,
+                                                         track_right,
+                                                         track_left)
 
         # Load images as sprites
-        fox = Fox(self.limit_down)
-        rabbit = Rabbit(self.limit_down)
-        foxes = Foxes(self.limit_up, foxes_size)
-        rabbits = Rabbits(self.limit_up, rabbits_size)
         all_sprites = pygame.sprite.RenderPlain((fox, rabbit), foxes, rabbits)
 
         # draw images
@@ -106,5 +110,3 @@ class GameEnvironment:
         clock.tick(60)
 
         return frame, right_hand, left_hand, screen
-
-
